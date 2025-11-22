@@ -1,8 +1,17 @@
-version: '3.8'
 
-sevices:
+# version - tells Docker which syntax version to use
+# legasy , don't need to spesify vertion anymore
+
+#version: '3.8'
+
+# services - all containers you want Docker Compose to manage together.
+# nginx - our first container running Nginx
+# build - where Dockerfile is located
+# ports - defines port mapping (like HOST:CONTAINER, e.g.,) connect local port 8080 to container port 80
+
+services:
   nginx:
     build: requirements/nginx/.
     container_name: nginx
     ports:
-      - "80:80"
+      - "8080:80"
