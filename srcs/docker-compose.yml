@@ -1,5 +1,11 @@
 version: '3.8'
 
+# version - tells Docker which syntax version to use
+# services - list of all containers we want
+# nginx - our first container running Nginx
+# build - where Dockerfile is located
+# ports - connect local port 8080 to container port 80
+
 sevices:
   nginx:
     build: requirements/nginx/.
