@@ -11,40 +11,55 @@
 
 services:
   nginx:
-    build: requirements/nginx/.
+    build: ./requirements/nginx/.
     container_name: nginx
     ports:
       - "8080:80"
     volumes:
       - ./requirements/nginx/default.conf:/etc/nginx/conf.d/default.conf
       - wordpress_data:/var/www/html
+    networks:
+      - inception
+    restart: always # or always??? to be confirmed
   mariadb:
-    build: requirements/mariadb/.
+    build: ./requirements/mariadb/.
     container_name: mariadb
     ports:
       - "3306:3306"
-    environment:                        # variables MariaDB reads on startup
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: mydb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: userpass
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:                            # keeps database data persistent
       - mariadb_data:/var/lib/mysql
+    networks:
+      - inception
+    restart: always
   wordpress:
-    build: requirements/wordpress/.
+    build: ./requirements/wordpress/.
     container_name: wordpress
     depends_on:
       - mariadb
     environment:
-      WORDPRESS_DB_HOST: mariadb:3306
-      WORDPRESS_DB_USER: user
-      WORDPRESS_DB_PASSWORD: userpass
-      WORDPRESS_DB_NAME: mydb
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
     volumes:
       - wordpress_data:/var/www/html 
+    networks:
+      - inception
+    restart: always
      
 
 
 volumes:
   mariadb_data:
+    driver: local
   wordpress_data:
+    driver: local
+
+networks:
+  inception:
+    driver: bridge
