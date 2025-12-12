@@ -14,18 +14,28 @@ services:
     build: ./requirements/nginx/.
     container_name: nginx
     ports:
-      - "8080:80"
+      - "443:443"
+    expose:
+      - '443'
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
     volumes:
-      - ./requirements/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      # - ./requirements/nginx/default.conf:/etc/nginx/conf.d/default.conf
       - wordpress_data:/var/www/html
+      # WordPress files volume (read-only for nginx)
+      #- wordpress_data:/var/www/html:ro
+      # Optionally persist certs between restarts
+      #- nginx_certs:/etc/nginx/certs
+    depends_on:
+      - wordpress
     networks:
       - inception
     restart: always # or always??? to be confirmed
   mariadb:
     build: ./requirements/mariadb/.
     container_name: mariadb
-    ports:
-      - "3306:3306"
+    # ports:
+    #   - "3306:3306" # don't need after seting up internal neetwork
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
@@ -59,7 +69,8 @@ volumes:
     driver: local
   wordpress_data:
     driver: local
+  # nginx_certs:
 
 networks:
   inception:
-    driver: bridge
+    driver: bridge # default value - internal isolated local network
