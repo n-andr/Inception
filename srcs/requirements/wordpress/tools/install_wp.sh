@@ -32,7 +32,14 @@ if ! wp core is-installed --allow-root; then
         --skip-email \
         --allow-root
 
-    wp theme install twentytwentythree --activate --allow-root
+    # wp theme install inspiro --activate --allow-root 
+	# use default theme
+	wp option update default_comment_status closed --allow-root
+	wp option update comment_moderation 0 --allow-root
+	wp option update comments_notify 0 --allow-root
+	wp option update moderation_notify 0 --allow-root
+	wp user create "$WP_USER" "$WP_USER_EMAIL" --role=editor --user_pass="$WP_USER_PWD" --allow-root
+
 fi
 
 exec "$@"
