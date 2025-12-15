@@ -1,18 +1,3 @@
-# FROM mariadb:latest
-# EXPOSE 3306
-
-
-# FROM    alpine:3.13
-
-# RUN     apk update && apk upgrade && apk add --no-cache \
-#         mariadb \
-#         mariadb-client
-        
-# COPY    tools/configure.sh /tmp/configure.sh
-
-# ENTRYPOINT ["sh", "/tmp/configure.sh"]
-
-
 FROM debian:bookworm-slim
 
 # Install MariaDB server and remove package lists to reduce size

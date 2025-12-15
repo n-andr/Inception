@@ -47,4 +47,4 @@ status:
 	@echo "Showing running containers..."
 	docker ps -a
 
-.PHONY: all up down restart clean deepclean fclean re logs status
+.PHONY: all up down restart clean fclean re logs status
