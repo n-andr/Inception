@@ -1,21 +1,20 @@
 NAME = inception
 COMPOSE_FILE = srcs/docker-compose.yml
+ENV_SRC = ../conf_vars/.env
 ENV_FILE = srcs/.env
-CERT_DIR = srcs/requirements/nginx/tools/certs
-CERT_KEY = $(CERT_DIR)/server.key
-CERT_CRT = $(CERT_DIR)/server.crt
-SECRETS_DIR = secrets
 
 
-all: setup up
 
-setup:
-	@echo "Setting up..."
-	@bash srcs/tools/create_env.sh
-	@bash srcs/tools/create_certs.sh
-	@echo "Setup complete."
+all: up
 
 up:
+	@echo "Setting up environment..."
+	@if [ -f $(ENV_DST) ]; then \
+		echo "srcs/.env already exists — skipping copy."; \
+		else \
+		cp $(ENV_SRC) $(ENV_FILE); \
+		echo ".env copied to srcs/"; \
+	fi
 	@echo "Starting containers..."
 	docker compose -f $(COMPOSE_FILE) up -d --build
 
@@ -32,13 +31,11 @@ clean:
 	@echo "Cleaning containers, networks, and images (keeping data)..."
 	docker compose -f $(COMPOSE_FILE) down --rmi all
 
-deepclean:
-	@echo "Full cleanup (including volumes and data)..."
-	docker compose -f $(COMPOSE_FILE) down --volumes --rmi all
-
 fclean: clean
 	@echo "Removing generated files..."
-	rm -rf $(CERT_DIR) $(ENV_FILE)
+	rm -rf $(CERT_DIR)
+	@echo "Full cleanup (including volumes and data)..."
+	docker compose -f $(COMPOSE_FILE) down --volumes --rmi all
 
 re: fclean all
 
@@ -50,4 +47,4 @@ status:
 	@echo "Showing running containers..."
 	docker ps -a
 
-.PHONY: all setup up down restart clean deepclean fclean re logs status
+.PHONY: all up down restart clean deepclean fclean re logs status

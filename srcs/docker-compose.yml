@@ -76,17 +76,17 @@ services:
 
 volumes:
   mariadb_data:
-    driver: local
-    # driver_opts:
-    #   type: local
-    #   o: bind
-    #   device: /home/nandreev/data/db_data/
+    # driver: local
+    driver_opts:
+      type: local
+      o: bind
+      device: /home/nandreev/data/db_data/
   wordpress_data:
-    driver: local
-    # driver_opts:
-    #   type: local
-    #   o: bind
-    #   device: /home/nandreev/data/wp_data/
+    # driver: local
+    driver_opts:
+      type: local
+      o: bind
+      device: /home/nandreev/data/wp_data/
 
 networks:
   inception:
