@@ -9,7 +9,7 @@ all: up
 
 up:
 	@echo "Setting up environment..."
-	@if [ -f $(ENV_DST) ]; then \
+	@if [ -f $(ENV_FILE) ]; then \
 		echo "srcs/.env already exists — skipping copy."; \
 		else \
 		cp $(ENV_SRC) $(ENV_FILE); \

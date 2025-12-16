@@ -4,3 +4,4 @@ srcs/.env
 srcs/requirements/nginx/tools/certs/server.crt
 
 srcs/requirements/nginx/tools/certs/server.key
+
