@@ -93,3 +93,8 @@ To stop the Infrastructure, while preserving volumes.
 ``` bash
 make down
 ```
+
+For manual host cleanup (explicit and intentional):
+
+sudo rm -rf /home/nandreev/data/db_data
+sudo rm -rf /home/nandreev/data/wp_data
